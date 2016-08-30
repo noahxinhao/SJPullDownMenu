@@ -1,0 +1,107 @@
+//
+//  SJMainViewController.m
+//  SJPullDownMenuDemo
+//
+//  Created by yeshaojian on 16/1/27.
+//  Copyright © 2016年 yeshaojian. All rights reserved.
+//
+
+#import "SJMainViewController.h"
+#import "SJPullDownMenu.h"
+#import "SJTestOneViewController.h"
+#import "SJTestTwoViewController.h"
+#import "SJTestThreeViewController.h"
+#import "SJButton.h"
+
+@interface SJMainViewController ()<SJPullDownMenuDataSource>
+
+@property (nonatomic, weak) SJPullDownMenu *menuView;
+
+@end
+
+@implementation SJMainViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // 设置控制器背景颜色
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 按钮默认值
+    NSArray *defaultTitleArray = @[@"综合排序", @"价格优先", @"更多"];
+    
+    // 初始化
+    SJPullDownMenu *menuView = [[SJPullDownMenu alloc] init];
+    // 设置尺寸
+    menuView.frame = CGRectMake(0, 20, self.view.bounds.size.width, 44);
+    // 设置数据源
+    menuView.dataSource = self;
+    // 设置每列按钮默认值
+    menuView.defaultTitleArray = defaultTitleArray;
+    
+    [self.view addSubview:menuView];
+    self.menuView = menuView;
+
+    // 添加内容控制器
+    [self addContentViewController];
+}
+
+/**
+ *  添加内容控制器
+ */
+- (void)addContentViewController {
+    
+    SJTestOneViewController *testOneVC = [[SJTestOneViewController alloc] init];
+    SJTestTwoViewController *testTwoVC = [[SJTestTwoViewController alloc] init];
+    SJTestThreeViewController *testThreeVC = [[SJTestThreeViewController alloc] init];
+    
+    [self addChildViewController:testOneVC];
+    [self addChildViewController:testTwoVC];
+    [self addChildViewController:testThreeVC];
+}
+
+// 返回下拉菜单多少列
+- (NSInteger)numberOfColsInMenu:(SJPullDownMenu *)pullDownMenu
+{
+    return self.childViewControllers.count;
+}
+
+// 返回下拉菜单每列按钮
+- (UIButton *)pullDownMenu:(SJPullDownMenu *)pullDownMenu buttonForColAtIndex:(NSInteger)index
+{
+    SJButton *button = [SJButton buttonWithType:UIButtonTypeCustom];
+
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"icon_more_highlighted"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"icon_more"] forState:UIControlStateSelected];
+    
+    return button;
+}
+
+// 返回下拉菜单每列对应的控制器
+- (UIViewController *)pullDownMenu:(SJPullDownMenu *)pullDownMenu viewControllerForColAtIndex:(NSInteger)index
+{
+    return self.childViewControllers[index];
+}
+
+// 返回下拉菜单每列对应的高度
+- (CGFloat)pullDownMenu:(SJPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
+{
+    // 设置高度
+    if (index == 0) {
+        
+        return 390;
+    } else if (index == 1) {
+        
+        return 130;
+    } else if (index == 2) {
+        
+        return 260;
+    } else {
+        
+        return 130;
+    }
+}
+
+@end
