@@ -1,17 +1,20 @@
 # SJPullDownMenu
 
+---
 - 快速集成类似淘宝筛选下拉菜单
-- 如果内容显示不全请转至：http://www.jianshu.com/p/d07c6393830c 查看使用教程
+- 如果页面显示不全等问题请转至：http://www.jianshu.com/p/d07c6393830c 查看使用
 
 ## Getting Started【开始使用】 
 
 ### Manually【手动导入】
 
+---
 - Drag all source files under floder SJPullDownMenu to your project.【将SJPullDownMenu文件夹中的所有源代码拽入项目中】
 - Import the main header file：#import "SJPullDownMenu.h"【导入主头文件：#import "SJPullDownMenu.h"】
 
 ## SJPullDownMenu.h
 
+---
 - 代理方法
 
 ```
@@ -95,8 +98,20 @@
 
 ```
 
+- 更新标题的通知名称
+
+```
+/**
+ *  更新菜单文字通知名称(如果没有冲突，建议不要修改)
+ */
+static NSString * const SJUpdateMenuTitle = @"SJUpdateMenuTitle";
+
+```
+
+
 ### 初始化菜单
 
+---
 ``` 
 	// 菜单按钮默认值
     NSArray *defaultTitleArray = @[@"综合排序", @"价格优先", @"更多"];
@@ -120,6 +135,7 @@
 
 ### 初始化内容控制器
 
+---
 ```
 /**
  *  添加内容控制器
@@ -139,6 +155,7 @@
 
 ### 实现代理方法
 
+---
 ```
 // 返回下拉菜单多少列
 - (NSInteger)numberOfColsInMenu:(SJPullDownMenu *)pullDownMenu
@@ -185,5 +202,31 @@
 }
 
 ```
+
+### 更新标题
+
+- 为了使用更灵活，使用通知来更新标题的方式，只需要在需要的地方使用通知就可以了
+	- 首先导入头文件
+	<br><br>
+	
+	```
+	#import "SJPullDownMenu.h"
+	
+	```
+	- 在需要的地方使用
+	<br><br>
+	
+	```
+	- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    // 更新标题
+    [[NSNotificationCenter defaultCenter] postNotificationName:SJUpdateMenuTitle object:self userInfo:@{@"title" : cell.textLabel.text}];
+}
+	
+	```
+	
+#### 注：这边的userInfo只可发送一个Key值,Key的name不限制
+
 
 ![效果图.gif](http://upload-images.jianshu.io/upload_images/1923109-3d3b1e9395d1e638.gif?imageMogr2/auto-orient/strip)
