@@ -52,6 +52,7 @@
 
 /**
  *  更新菜单文字通知名称(如果没有冲突，建议不要修改)
+ *  在需要更改标题文字的地方实现通知即可（传入的值限定一个KEY）
  */
 static NSString * const SJUpdateMenuTitle = @"SJUpdateMenuTitle";
 

@@ -15,7 +15,9 @@
 
 @interface SJMainViewController ()<SJPullDownMenuDataSource>
 
-@property (nonatomic, weak) SJPullDownMenu *menuView;
+@property (nonatomic, weak) SJPullDownMenu *menuView;  // 下拉菜单
+
+@property (nonatomic, strong) NSArray *defaultTitleAry;  // 默认标题
 
 @end
 
@@ -27,20 +29,18 @@
     // 设置控制器背景颜色
     self.view.backgroundColor = [UIColor whiteColor];
     
-    // 按钮默认值
-    NSArray *defaultTitleArray = @[@"综合排序", @"价格优先", @"更多"];
+    // 默认标题
+    _defaultTitleAry = @[@"综合排序", @"价格优先", @"更多"];
     
-    // 初始化
     SJPullDownMenu *menuView = [[SJPullDownMenu alloc] init];
     // 设置尺寸
     menuView.frame = CGRectMake(0, 20, self.view.bounds.size.width, 44);
-    // 设置数据源
     menuView.dataSource = self;
     // 设置每列按钮默认值
-    menuView.defaultTitleArray = defaultTitleArray;
+    menuView.defaultTitleArray = _defaultTitleAry;
+    self.menuView = menuView;
     
     [self.view addSubview:menuView];
-    self.menuView = menuView;
 
     // 添加内容控制器
     [self addContentViewController];
@@ -54,16 +54,19 @@
     SJTestOneViewController *testOneVC = [[SJTestOneViewController alloc] init];
     SJTestTwoViewController *testTwoVC = [[SJTestTwoViewController alloc] init];
     SJTestThreeViewController *testThreeVC = [[SJTestThreeViewController alloc] init];
+    UITableViewController *testFourVC = [[UITableViewController alloc] init];
     
     [self addChildViewController:testOneVC];
     [self addChildViewController:testTwoVC];
     [self addChildViewController:testThreeVC];
+    [self addChildViewController:testFourVC];
 }
 
+#pragma mark - 代理
 // 返回下拉菜单多少列
 - (NSInteger)numberOfColsInMenu:(SJPullDownMenu *)pullDownMenu
 {
-    return self.childViewControllers.count;
+    return self.defaultTitleAry.count;
 }
 
 // 返回下拉菜单每列按钮
@@ -88,7 +91,6 @@
 // 返回下拉菜单每列对应的高度
 - (CGFloat)pullDownMenu:(SJPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
 {
-    // 设置高度
     if (index == 0) {
         
         return 390;
@@ -100,7 +102,7 @@
         return 260;
     } else {
         
-        return 130;
+        return 200;
     }
 }
 
