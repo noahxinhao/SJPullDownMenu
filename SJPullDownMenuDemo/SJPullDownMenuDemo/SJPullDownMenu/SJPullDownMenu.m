@@ -207,11 +207,13 @@ static NSInteger const separateLineMargin = 10;
     // 是否实现numberOfColsInMenu:
     if (![self.dataSource respondsToSelector:@selector(numberOfColsInMenu:)]) {
         @throw [NSException exceptionWithName:@"SJPullDownMenuError" reason:@"没有实现（numberOfColsInMenu:）" userInfo:nil];
+        return;
     }
     
     // 是否实现pullDownMenu:buttonForColAtIndex:
     if (![self.dataSource respondsToSelector:@selector(pullDownMenu:buttonForColAtIndex:)]) {
         @throw [NSException exceptionWithName:@"SJPullDownMenuError" reason:@"没有实现(pullDownMenu:buttonForColAtIndex:）" userInfo:nil];
+        return;
     }
     
     // 每一列控制器的方法是否实现
